@@ -17,11 +17,11 @@ class Audio:
         milliseconds = int((seconds - int(seconds)) * 1000)
         return pysrt.SubRipTime(hours, minutes, secs, milliseconds)
 
-    def generate_sub(self, text: str, subtitle_filename: str = "samples/subtitle.srt", temp: bool=True):
+    def generate_sub(self, text: str, words_per_sec: int=2.3, subtitle_filename: str = "samples/subtitle.srt", temp: bool=True):
         subs = []
         words = text.split()
         start_time = 0.0
-        words_per_second = 2.3  # Approximate speech speed
+        words_per_second = words_per_sec  # Approximate speech speed
 
         frame = []
         for word in words:
@@ -74,9 +74,9 @@ class Audio:
 
         return audio_filename
     
-    async def text_to_speech_edge(self, text: str, audio_filename="samples/audio.mp3", temp: bool=True):
+    async def text_to_speech_edge(self, text: str, audio_filename="samples/audio.mp3", rate: str="-2%", pitch: str="-1Hz", temp: bool=True):
         voice = "en-US-ChristopherNeural"  # Choose a male voice (e.g., Guy, Eric, Roger)
-        tts = edge_tts.Communicate(text, voice)
+        tts = edge_tts.Communicate(text, voice=voice, rate=rate, pitch=pitch)
 
         if temp:
             temp_file = tempfile.NamedTemporaryFile(suffix=".mp3", delete=False)
@@ -86,5 +86,10 @@ class Audio:
         print(f"Audio saved as {audio_filename}")
 
         return audio_filename
+    
+if __name__=="__main__":
+    audio = Audio()
+    asyncio.run(audio.text_to_speech_edge(text="This is a sample file", rate="-20%", pitch="-17Hz", temp=False))
+    
     
 

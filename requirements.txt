@@ -18,7 +18,6 @@ gTTS
 pysrt
 edge-tts
 pydub 
-librosa 
 numpy 
 soundfile
 opencv-python

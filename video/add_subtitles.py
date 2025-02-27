@@ -37,9 +37,10 @@ def add_subtitles_to_video(
         
         font_size = video_height // 20
         try:
-            font = ImageFont.truetype(font_path, size=font_size) if font_path else ImageFont.load_default()
+            font = ImageFont.truetype(font_path, size=font_size)
         except:
             font = ImageFont.load_default()
+            print("default font loaded")
         
         text_w, text_h = draw.textbbox((0, 0), text, font=font)[2:]
         x = (video_width - text_w) // 2

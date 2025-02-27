@@ -70,9 +70,9 @@ class LifestyleVideo:
         if not quote:
             quote = self.generate_text(time)
 
-        audio_path = asyncio.run(self.audio.text_to_speech_edge(quote))
+        audio_path = asyncio.run(self.audio.text_to_speech_edge(text=quote, rate="-15%", pitch="-15Hz"))
 
-        subtitle_path = self.audio.generate_sub(quote)
+        subtitle_path = self.audio.generate_sub(text=quote, words_per_sec=2)
 
         final_path = combine_video(input_video_path=video_path, audio_path=audio_path, subtitle_path=subtitle_path, music_path=music)
 
