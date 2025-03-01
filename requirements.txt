@@ -20,6 +20,6 @@ edge-tts
 pydub 
 numpy 
 soundfile
-opencv-python
 pexels-api
 watchdog
+opencv-python-headless
