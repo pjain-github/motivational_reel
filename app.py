@@ -4,7 +4,7 @@ import tempfile
 from general_video.general import GeneralVideo
 from ai.gemini_util import Gemini
 from ai.audio_util import Audio
-from data.pexels_util import Pexels
+from data_util.pexels_util import Pexels
 from dotenv import load_dotenv
 import os
 
