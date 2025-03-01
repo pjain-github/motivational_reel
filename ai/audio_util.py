@@ -76,7 +76,15 @@ class Audio:
     
     async def text_to_speech_edge(self, text: str, audio_filename="samples/audio.mp3", rate: str="-2%", pitch: str="-1Hz", temp: bool=True):
         voice = "en-US-ChristopherNeural"  # Choose a male voice (e.g., Guy, Eric, Roger)
-        tts = edge_tts.Communicate(text, voice=voice, rate=rate, pitch=pitch)
+
+        if pitch and rate:
+            tts = edge_tts.Communicate(text, voice=voice, rate=rate, pitch=pitch)
+        elif pitch:
+            tts = edge_tts.Communicate(text, voice=voice, pitch=pitch)
+        elif rate:
+            tts = edge_tts.Communicate(text, voice=voice, rate=rate)
+        else:
+            tts = edge_tts.Communicate(text, voice=voice)
 
         if temp:
             temp_file = tempfile.NamedTemporaryFile(suffix=".mp3", delete=False)

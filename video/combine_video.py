@@ -6,6 +6,6 @@ def combine_video(input_video_path, audio_path, subtitle_path, music_path):
 
     step2 = add_audio.add_audio_to_video(video_path=step1, audio_path=audio_path)
 
-    step3 = add_music.add_background_music(video_path=step2, music_path=music_path, temp=False)
+    step3 = add_music.add_background_music(video_path=step2, music_path=music_path, temp=True)
 
     return step3
