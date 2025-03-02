@@ -12,7 +12,7 @@ class GeneralVideo:
         self.pexels = pexels_class
 
     def pull_video(self, url: str=None):
-        input_video = self.pexels.download_video(link=url)
+        input_video, _ = self.pexels.download_video(link=url)
 
         return input_video
     
@@ -32,7 +32,7 @@ class GeneralVideo:
     
     def test_subtitles(self, quote: str=None, audio_path: str=None, words_per_sec: int=2):
 
-        subtitle_path = self.audio.generate_sub(text=quote, words_per_sec=words_per_sec)
+        subtitle_path = self.audio.generate_sub(mp3_file=audio_path)
         video_path = test_subtitles(audio_path=audio_path, subtitle_path=subtitle_path)
 
         return video_path, subtitle_path
