@@ -20,15 +20,7 @@ class GeneralVideo:
         # Generate auido from text
         audio_path = asyncio.run(self.audio.text_to_speech_edge(text=quote, rate=rate, pitch=pitch))
 
-        words = len(quote.split(" "))
-
-        # Get the duration of the audio
-        audio = AudioFileClip(audio_path)
-        duration = audio.duration  # Convert milliseconds to seconds
-
-        words_per_sec = words / duration
-
-        return audio_path, duration, words_per_sec
+        return audio_path
     
     def test_subtitles(self, quote: str=None, audio_path: str=None, words_per_sec: int=2):
 
@@ -37,16 +29,9 @@ class GeneralVideo:
 
         return video_path, subtitle_path
     
-    def generate_video(self, quote: str=None, audio_path: str=None, url: str=None, video_path: str=None, subtitle_path: str=None, music:str = "samples/sample_background_music.mp3"):
+    def generate_video(self, audio_path: str=None, video_path: str=None, music:str = "samples/sample_background_music.mp3"):
 
-        if url:
-            video_path, time = self.pull_video(url)
-
-        if not audio_path:
-            audio_path = asyncio.run(self.audio.text_to_speech_edge(text=quote, rate="-15%", pitch="-15Hz"))
-
-        if not subtitle_path:
-            subtitle_path = self.audio.generate_sub(text=quote, words_per_sec=2)
+        subtitle_path = self.audio.generate_sub(mp3_file=audio_path)
 
         final_path = combine_video(input_video_path=video_path, audio_path=audio_path, subtitle_path=subtitle_path, music_path=music)
 

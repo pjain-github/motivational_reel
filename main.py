@@ -2,6 +2,7 @@ from ai.gemini_util import Gemini
 from ai.audio_util import Audio
 from data_util.pexels_util import Pexels
 from general_video.general import GeneralVideo
+from general_video.multi_video import MultiVideo
 from dotenv import load_dotenv
 import os
 
@@ -24,6 +25,10 @@ def main(quote: str, video_url:str):
     video_path = gv.generate_video(quote=quote, 
                       url=video_url, 
                       music="samples/sample_background_music.mp3")
+    
+    mv = MultiVideo(llm, audio, px)
+    
+
     
     return video_path
 

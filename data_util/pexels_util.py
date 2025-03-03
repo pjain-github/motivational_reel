@@ -61,5 +61,33 @@ class Pexels:
         except requests.exceptions.RequestException as e:
             logging.error(f"Failed to download video: {e}")
             return None, None
+        
+    def download_image_pexels(api_key: str, link: str, output_path: str = "samples/image.jpg", temp: bool = True):
+        """Downloads an image from Pexels using the provided link and saves it to output_path or a temporary file."""
+        try:
+            logging.info(f"Downloading image: {link}")
+
+            image_response = requests.get(link, stream=True)
+            image_response.raise_for_status()
+
+            # Extract file extension from URL
+            ext = os.path.splitext(link)[-1].lower()
+            if ext not in [".jpg", ".jpeg", ".webp", ".png"]:
+                ext = ".jpg"  # Default to .jpg if extension is missing or unsupported
+
+            if temp:
+                temp_file = tempfile.NamedTemporaryFile(delete=False, suffix=ext)
+                output_path = temp_file.name
+                logging.info(f"Using temporary file: {output_path}")
+
+            with open(output_path, "wb") as file:
+                for chunk in image_response.iter_content(chunk_size=1024 * 1024):  # 1MB chunks
+                    file.write(chunk)
+
+            logging.info(f"Download completed: {output_path}")
+            return output_path
+        except requests.exceptions.RequestException as e:
+            logging.error(f"Failed to download image: {e}")
+            return None
 
 
