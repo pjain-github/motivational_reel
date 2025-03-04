@@ -1,6 +1,7 @@
 import streamlit as st
 import os 
 import tempfile
+from video.trim_video import trim_video
 
 def final_video(rg, advanced_setting):
 
@@ -153,6 +154,8 @@ def video_section(rg, advanced_setting, selected_video):
 
     # Section 2: Video Generation
     with st.expander("Video Section", expanded=False):
+
+        time = st.slider("Time for video", min_value=-50, max_value=50, value=10, step=1)
         
         type = st.selectbox("Upload", ["Video", "Image"])
 
@@ -162,6 +165,7 @@ def video_section(rg, advanced_setting, selected_video):
 
             if url and st.button("Download Video"):
                 video_path = rg.pull_video(url)
+                video_path = trim_video(video_path=video_path, time=time)
                 if video_path:
                     st.session_state.video_paths[selected_video]['video_path'] = video_path
                     st.success("Video downloaded successfully!")
@@ -176,6 +180,7 @@ def video_section(rg, advanced_setting, selected_video):
             if uploaded_file:
                 with tempfile.NamedTemporaryFile(delete=False, suffix=".mp4") as temp_file:
                     temp_file.write(uploaded_file.read())
+                    temp_file.name = trim_video(video_path=temp_file.name, time=time)
                     st.session_state.video_paths[selected_video]['video_path'] = temp_file.name
                     st.success("Video uploaded successfully!")
                 
@@ -186,7 +191,7 @@ def video_section(rg, advanced_setting, selected_video):
             url = st.text_input("Enter the URL of the image you want to use")
 
             if url and st.button("Download Image"):
-                video_path = rg.pull_image(url, time=st.session_state.video_paths[selected_video]['audio_time'])
+                video_path = rg.pull_image(url, time=time)
                 if video_path:
                     st.session_state.video_paths[selected_video]['video_path'] = video_path
                     st.success("Video downloaded successfully!")
@@ -203,7 +208,7 @@ def video_section(rg, advanced_setting, selected_video):
 
                 with tempfile.NamedTemporaryFile(delete=False, suffix=ext) as temp_file:
                     temp_file.write(uploaded_file.read())
-                    video_path = rg.get_video_from_image(image_path=temp_file.name, time=st.session_state.video_paths[selected_video]['audio_time'])
+                    video_path = rg.get_video_from_image(image_path=temp_file.name, time=time)
                     st.session_state.video_paths[selected_video]['video_path'] = video_path
                     st.success("Video generated successfully!")
 
